@@ -1,29 +1,16 @@
-const canvas = document.getElementById("gameCanvas");
+import { Car } from "./car.js";
+import { ParkingSpot } from "./parkingSpot.js";
+
+
+const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 
-// Set canvas size
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-const carWidth = 50;
-const carHeight = 90;
-const parkingSpotWidth = 70;
-const parkingSpotHeight = 110;
 
-let car = {
-    x: 100,
-    y: 100,
-    width: carWidth,
-    height: carHeight,
-    speed: 5
-};
-
-let parkingSpot = {
-    x: canvas.width - 150,
-    y: canvas.height / 2 - parkingSpotHeight / 2,
-    width: parkingSpotWidth,
-    height: parkingSpotHeight
-};
+let car = new Car("green", 100, 100, 4)
+let parkingSpot = new ParkingSpot(500, 500, 50, 70)
 
 let keys = {
     up: false,
@@ -35,9 +22,9 @@ let keys = {
 // Car movement logic
 function moveCar() {
     if (keys.up && car.y > 0) car.y -= car.speed;
-    if (keys.down && car.y + car.height < canvas.height) car.y += car.speed;
+    if (keys.down) car.y += car.speed;
     if (keys.left && car.x > 0) car.x -= car.speed;
-    if (keys.right && car.x + car.width < canvas.width) car.x += car.speed;
+    if (keys.right) car.x += car.speed;
 }
 
 // Detect collision with parking spot
@@ -55,8 +42,9 @@ function checkCollisionWithParking() {
 
 // Draw the car
 function drawCar() {
-    ctx.fillStyle = "blue";
-    ctx.fillRect(car.x, car.y, car.width, car.height);
+    const img = document.createElement("img")
+    img.src = car.img
+    ctx.drawImage(img, car.x, car.y)
 }
 
 // Draw the parking spot
@@ -79,7 +67,7 @@ function draw() {
     if (checkCollisionWithParking()) {
         ctx.fillStyle = "black";
         ctx.font = "30px Arial";
-        ctx.fillText("Parked! Press R to reset", canvas.width / 2 - 150, canvas.height / 2 - 150);
+        ctx.fillText("Parked! Press [Space] to Continue", canvas.width / 2 - 150, canvas.height / 2 - 150);
     }
 }
 
@@ -89,6 +77,10 @@ window.addEventListener("keydown", (event) => {
     if (event.key === "ArrowDown") keys.down = true;
     if (event.key === "ArrowLeft") keys.left = true;
     if (event.key === "ArrowRight") keys.right = true;
+    if (event.key === "w") keys.up = true;
+    if (event.key === "s") keys.down = true;
+    if (event.key === "a") keys.left = true;
+    if (event.key === "d") keys.right = true;
 });
 
 // Keyup event listener to stop car movement
@@ -97,11 +89,15 @@ window.addEventListener("keyup", (event) => {
     if (event.key === "ArrowDown") keys.down = false;
     if (event.key === "ArrowLeft") keys.left = false;
     if (event.key === "ArrowRight") keys.right = false;
-    if (event.key === "r" || event.key === "R") resetGame();
+    if (event.key === "w") keys.up = false;
+    if (event.key === "s") keys.down = false;
+    if (event.key === "a") keys.left = false;
+    if (event.key === "d") keys.right = false;
+    if (event.key === "r" || event.key === "R") NextLevel();
 });
 
 // Reset the game when the car is parked
-function resetGame() {
+function NextLevel() {
     car.x = 100;
     car.y = 100;
 }
