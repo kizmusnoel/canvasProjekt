@@ -5,5 +5,6 @@ export class ParkingSpot {
         this.y = y
         this.width = width
         this.height = height
+        this.rotation = 0
     }
 };
