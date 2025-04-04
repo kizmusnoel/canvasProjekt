@@ -1,19 +1,20 @@
 import { Car } from "./car.js";
 import { ParkingSpot } from "./parkingSpot.js";
+import { levels } from "./levels.js"
 
 
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 const fps = 60
-let currentLevel = 1
+let currentLevel = 0
 
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 
-let car = new Car("green", 100, 100, 4)
-let parkingSpot = new ParkingSpot(500, 500, 70, 120)
+let car = new Car("green", levels[currentLevel][0], levels[currentLevel][1], 4)
+let parkingSpot = new ParkingSpot(levels[currentLevel][2], levels[currentLevel][3], 70, 120)
 
 let keys = {
     up: false,
@@ -60,9 +61,7 @@ function checkCollisionWithParking() {
     if (
         Math.abs(car.x - parkingSpot.x) < 40 &&
         Math.abs(car.y - parkingSpot.y) < 40
-    ) {
-        return true;
-    }
+    ) return true;
     return false;
 }
 
@@ -96,7 +95,7 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 
-    drawLevel()
+    drawLevel(levels[currentLevel])
     drawParkingSpot();
     drawCar();
 
@@ -105,9 +104,32 @@ function draw() {
         ctx.font = "30px Arial";
         ctx.fillText("Parked! Press [Space] to Continue", canvas.width / 2 - 150, canvas.height / 2 - 150);
     }
+    if (Collision()) {
+        car.x = levels[currentLevel][0]
+        car.y = levels[currentLevel][1]
+    }
 }
 
-function drawLevel() {
+function Collision() {
+    for (let obstacle of levels[currentLevel]) {
+        if (obstacle.collision) {
+            return false
+
+        }
+    }
+
+    return false
+
+}
+
+function drawLevel(level) {
+    for (let index = 4; index < level.length; index++) {
+        const obstacle = level[index];
+
+        const img = document.createElement("img");
+        img.src = obstacle.texture;
+        ctx.drawImage(img, obstacle.x, obstacle.y, obstacle.scale, obstacle.scale);
+    }
 
 }
 
@@ -131,8 +153,17 @@ window.addEventListener("keyup", (event) => {
     if (event.key === "s") keys.down = false;
     if (event.key === "a") keys.left = false;
     if (event.key === "d") keys.right = false;
-    if (event.code === "Space" && checkCollisionWithParking()) currentLevel += 1
+    if (event.code === "Space" && checkCollisionWithParking()) NextLevel()
 });
+
+function NextLevel() {
+    currentLevel++
+
+    car.x = levels[currentLevel][0]
+    car.y = levels[currentLevel][1]
+    parkingSpot.x = levels[currentLevel][2]
+    parkingSpot.y = levels[currentLevel][3]
+}
 
 
 function gameLoop() {
