@@ -2,6 +2,8 @@ import { Car } from "./car.js";
 import { ParkingSpot } from "./parkingSpot.js";
 import { levels } from "./levels.js"
 
+let lastTime = 0;
+const fps = 60;
 
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
@@ -13,7 +15,6 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 let car = new Car("green", levels[currentLevel][0], levels[currentLevel][1], 4)
-
 let parkingSpot = new ParkingSpot(levels[currentLevel][2], levels[currentLevel][3], 70, 120)
 
 let keys = {
@@ -163,12 +164,14 @@ function NextLevel() {
 }
 
 
-function gameLoop() {
-    moveCar();
-    draw();
-    setTimeout(() => {
-        requestAnimationFrame(gameLoop);
-    }, 1000 / 60);
+function gameLoop(currentTime) {
+    requestAnimationFrame(gameLoop);
+
+    if (currentTime - lastTime < 1000 / fps) return
+    lastTime = currentTime;
+
+    draw()
+    moveCar()
 }
 
-gameLoop();
+requestAnimationFrame(gameLoop);
