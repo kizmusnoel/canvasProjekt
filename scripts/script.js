@@ -4,8 +4,8 @@ import { ParkingSpot } from "./parkingSpot.js";
 
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
+const fps = 60
 let currentLevel = 1
-let switchLevel = false
 
 
 canvas.width = window.innerWidth;
@@ -95,17 +95,8 @@ function drawParkingSpot() {
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    if (switchLevel) {
-        switch (currentLevel) {
-            case 2: {
-                car.x = 300
-                switchLevel = false
-                break;
-            }
-        }
-    }
 
-    drawObstacles()
+    drawLevel()
     drawParkingSpot();
     drawCar();
 
@@ -116,7 +107,7 @@ function draw() {
     }
 }
 
-function drawObstacles() {
+function drawLevel() {
 
 }
 
@@ -140,17 +131,16 @@ window.addEventListener("keyup", (event) => {
     if (event.key === "s") keys.down = false;
     if (event.key === "a") keys.left = false;
     if (event.key === "d") keys.right = false;
-    if (event.code === "Space" && checkCollisionWithParking()) {
-        currentLevel += 1
-        switchLevel = true
-    }
+    if (event.code === "Space" && checkCollisionWithParking()) currentLevel += 1
 });
 
 
 function gameLoop() {
     moveCar();
     draw();
-    requestAnimationFrame(gameLoop);
+    setTimeout(() => {
+        requestAnimationFrame(gameLoop);
+    }, 1000 / fps);
 }
 
 gameLoop();
