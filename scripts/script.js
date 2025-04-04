@@ -5,15 +5,17 @@ import { levels } from "./levels.js"
 
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
-const fps = 60
 let currentLevel = 0
 
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-
 let car = new Car("green", levels[currentLevel][0], levels[currentLevel][1], 4)
+
+const carImg = document.createElement("img");
+carImg.src = car.img;
+
 let parkingSpot = new ParkingSpot(levels[currentLevel][2], levels[currentLevel][3], 70, 120)
 
 let keys = {
@@ -67,15 +69,13 @@ function checkCollisionWithParking() {
 
 // Draw the car
 function drawCar() {
-    const img = document.createElement("img");
-    img.src = car.img;
 
     ctx.save();
 
     ctx.translate(car.x + car.width / 2, car.y + car.height / 2);
     ctx.rotate(car.rotation);
 
-    ctx.drawImage(img, -car.width / 2, -car.height / 2, car.width, car.height);
+    ctx.drawImage(carImg, -car.width / 2, -car.height / 2, car.width, car.height);
 
     ctx.restore();
 
@@ -86,6 +86,7 @@ function drawParkingSpot() {
     if (checkCollisionWithParking()) ctx.fillStyle = "lightgreen";
     else ctx.fillStyle = "green";
     ctx.lineWidth = "5"
+    ctx.beginPath()
     ctx.rect(parkingSpot.x, parkingSpot.y, parkingSpot.width, parkingSpot.height);
     ctx.stroke()
     ctx.fill()
@@ -169,9 +170,7 @@ function NextLevel() {
 function gameLoop() {
     moveCar();
     draw();
-    setTimeout(() => {
-        requestAnimationFrame(gameLoop);
-    }, 1000 / fps);
+    requestAnimationFrame(gameLoop);
 }
 
 gameLoop();
