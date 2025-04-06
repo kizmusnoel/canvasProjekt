@@ -12,7 +12,7 @@ const level5 = [100, 110, 400, 400]
 
 
 // Level 1
-level1.push(new Obstacle(100, 200, "img/car_green.png"))
+level1.push(new Obstacle(100, 500, "img/car_green.png"))
 
 
 // Level 2

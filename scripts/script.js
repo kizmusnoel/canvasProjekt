@@ -71,11 +71,11 @@ function drawCar() {
 
     ctx.save();
 
-    ctx.translate(car.x + car.width / 2, car.y + car.height / 2);
+    ctx.translate(car.x + car.scale / 2, car.y + car.scale / 2);
     ctx.rotate(car.rotation);
 
     img.src = car.img;
-    ctx.drawImage(img, -car.width / 2, -car.height / 2, car.width, car.height);
+    ctx.drawImage(img, -car.scale / 2, -car.scale / 2, car.scale, car.scale);
 
     ctx.restore();
 
@@ -113,15 +113,14 @@ function draw() {
 
 function Collision() {
     for (let obstacle of levels[currentLevel]) {
-        if (obstacle.collision) {
-            return false
+        if (!obstacle.collision) continue;
 
-        }
+        return false
     }
 
-    return false
-
+    return false;
 }
+
 
 function drawLevel(level) {
     for (let index = 4; index < level.length; index++) {
