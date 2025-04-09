@@ -23,6 +23,29 @@ let keys = {
     right: false
 };
 
+// menu
+document.querySelector("#startButton").addEventListener("click", () => {
+    document.querySelector("#startScreen").style.display = "none"
+    document.querySelector("#levelScreen").style.display = "flex"
+})
+document.querySelectorAll(".level").forEach((level) => {
+    level.addEventListener("click", () => {
+        if (!level.classList.contains("disabled")) {
+            currentLevel = level.id - 1
+            document.querySelector("#levelScreen").style.display = "none"
+            canvas.style.display = "block"
+
+        }
+
+    })
+})
+
+
+
+
+
+
+
 // Car movement logic
 function moveCar() {
     const angleOffset = -Math.PI / 2; // 90 degrees in radians

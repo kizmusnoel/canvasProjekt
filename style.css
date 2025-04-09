@@ -2,13 +2,84 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    background-color: rgb(218, 152, 66);
+    font-family: Arial, Helvetica, sans-serif;
+    user-select: none;
 }
 
 canvas {
-    display: block;
+    display: none;
     background-color: #e0e0e0;
-    margin: 100px auto;
-    width: 1000px;
+    margin: auto;
+    width: 1300px;
+    height: 594px;
     border: 2px solid black;
     border-radius: 10px;
+}
+
+#levelScreen {
+    display: none;
+    flex-direction: column;
+}
+
+#levelScreen h2 {
+    color: white;
+    font-size: 60px;
+}
+
+.levels {
+    display: flex;
+}
+
+.level {
+    margin: 20px;
+    font-size: 50px;
+    font-weight: bold;
+    background-color: gold;
+    padding: 40px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.level:hover {
+    filter: brightness(0.8);
+}
+
+.disabled {
+    filter: brightness(0.4) !important;
+    cursor: default;
+}
+
+
+.screen {
+    display: flex;
+    background-color: #a12222;
+    margin: auto;
+    width: 1300px;
+    height: 594px;
+    border: 2px solid black;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+#startButton {
+    background-color: gold;
+    font-weight: bold;
+    padding: 20px;
+    border-radius: 5px;
+    font-size: 50px;
+    border: 3px solid black;
+    transition: 0.3s;
+}
+
+#startButton:hover {
+    filter: brightness(0.8);
+}
+
+h1 {
+    color: yellow;
+    text-align: center;
+    font-family: fantasy;
+    text-shadow: 2px 2px 5px black;
 }
