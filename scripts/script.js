@@ -7,7 +7,6 @@ const fps = 60;
 
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
-const img = document.createElement("img");
 let currentLevel = 0
 
 
@@ -66,34 +65,6 @@ function checkCollisionWithParking() {
     return false;
 }
 
-// Draw the car
-function drawCar() {
-
-    ctx.save();
-
-    img.src = car.img;
-    car.width = img.width
-    car.height = img.height
-
-    // Adjust the position based on the scale factor
-    const scaledX = car.x + car.width / 2 * car.scale;
-    const scaledY = car.y + car.height / 2 * car.scale;
-
-    // Translate to the car's position and rotate it
-    ctx.translate(scaledX, scaledY);
-    ctx.rotate(car.rotation);
-
-    // Apply the scaling factor
-    ctx.scale(car.scale, car.scale);
-
-    // Set the image source (ensure img.src is only set once if it changes)
-
-    // Draw the image, adjusted for the scale
-    ctx.drawImage(img, -car.width / 2, -car.height / 2, car.width, car.height);
-
-    ctx.restore();
-}
-
 
 function drawParkingSpot() {
     if (checkCollisionWithParking()) ctx.fillStyle = "lightgreen";
@@ -121,17 +92,49 @@ function draw() {
     if (Collision()) {
         car.x = levels[currentLevel][0]
         car.y = levels[currentLevel][1]
+        car.rotation = 3.14
     }
 }
 
 function Collision() {
     for (let obstacle of levels[currentLevel]) {
-        if (!obstacle.collision) continue; // Skip obstacles that don't have collision
+        if (!obstacle.collision) continue;
+        if (
+            Math.abs(car.x - obstacle.x) < Math.abs(car.width - obstacle.width) &&
+            Math.abs(car.y - obstacle.y) < Math.abs(car.height - obstacle.height) / 2
+        ) return true;
 
-        return false
     }
 
-    return false; // No collision
+    // No collision detected
+    return false;
+}
+// Draw the car
+function drawCar() {
+
+    ctx.save();
+    const img = document.createElement("img");
+
+    img.src = car.img;
+    car.width = img.width
+    car.height = img.height
+
+    // Adjust the position based on the scale factor
+    const scaledX = car.x + car.width / 2 * car.scale;
+    const scaledY = car.y + car.height / 2 * car.scale;
+
+    // Translate to the car's position and rotate it
+    ctx.translate(scaledX, scaledY);
+    ctx.rotate(car.rotation);
+
+    // Apply the scaling factor
+    ctx.scale(car.scale, car.scale);
+
+
+    // Draw the image, adjusted for the scale
+    ctx.drawImage(img, -car.width / 2, -car.height / 2, car.width, car.height);
+    img.remove()
+    ctx.restore();
 }
 
 
@@ -140,6 +143,7 @@ function drawLevel(level) {
         ctx.save();
 
         const obstacle = level[index];
+        const img = document.createElement("img")
         img.src = obstacle.texture;
         obstacle.width = img.width
         obstacle.height = img.height
@@ -151,9 +155,9 @@ function drawLevel(level) {
         ctx.translate(scaledX, scaledY);
 
         ctx.scale(obstacle.scale, obstacle.scale);
-
         ctx.drawImage(img, -obstacle.width / 2, -obstacle.height / 2, obstacle.width, obstacle.height);
 
+        img.remove()
         ctx.restore();
     }
 }
