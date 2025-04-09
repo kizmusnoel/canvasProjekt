@@ -10,6 +10,12 @@ const ctx = canvas.getContext("2d");
 let currentLevel = 0
 
 
+let unlockedLevels = JSON.parse(localStorage.getItem("unlockedLevels")) === null ? [1] : JSON.parse(localStorage.getItem("unlockedLevels"))
+unlockedLevels.forEach((level) => {
+    document.getElementById(`${level}`).classList.remove("disabled")
+})
+
+
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
@@ -211,10 +217,20 @@ window.addEventListener("keyup", (event) => {
 function NextLevel() {
     currentLevel++
 
-    car.x = levels[currentLevel][0]
-    car.y = levels[currentLevel][1]
-    parkingSpot.x = levels[currentLevel][2]
-    parkingSpot.y = levels[currentLevel][3]
+    if (currentLevel >= levels.length) {
+        localStorage.setItem("unlockedLevels", null)
+        canvas.style.display = "none"
+        document.querySelector("#endScreen").style.display = "flex"
+        currentLevel = levels.length - 1
+    } else {
+        unlockedLevels.push(currentLevel + 1)
+        localStorage.setItem("unlockedLevels", JSON.stringify(unlockedLevels))
+
+        car.x = levels[currentLevel][0]
+        car.y = levels[currentLevel][1]
+        parkingSpot.x = levels[currentLevel][2]
+        parkingSpot.y = levels[currentLevel][3]
+    }
 }
 
 

@@ -9,7 +9,7 @@ body {
 
 canvas {
     display: none;
-    background-color: #e0e0e0;
+    background-color: white;
     margin: auto;
     width: 1300px;
     height: 594px;
@@ -39,10 +39,14 @@ canvas {
     padding: 40px;
     cursor: pointer;
     transition: 0.3s;
+    border: 3px solid transparent;
+
 }
 
 .level:hover {
     filter: brightness(0.8);
+    border: 3px solid black;
+    border-radius: 10px;
 }
 
 .disabled {
@@ -63,14 +67,44 @@ canvas {
     align-items: center;
 }
 
+#endScreen {
+    display: none;
+    color: white;
+    font-size: 40px;
+    flex-direction: column;
+}
+
+
+#startScreen {
+    color: white;
+    font-size: 40px;
+    flex-direction: column;
+}
+
+#endScreen button {
+    background-color: gold;
+    font-weight: bold;
+    padding: 20px;
+    border-radius: 5px;
+    font-size: 50px;
+    border: 1px solid black;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+#endScreen button:hover {
+    filter: brightness(0.8);
+}
+
 #startButton {
     background-color: gold;
     font-weight: bold;
     padding: 20px;
     border-radius: 5px;
     font-size: 50px;
-    border: 3px solid black;
+    border: 1px solid black;
     transition: 0.3s;
+    cursor: pointer;
 }
 
 #startButton:hover {
