@@ -1,13 +1,12 @@
 export class Car {
-    constructor(color, x, y, speed) {
+    constructor(img, x, y, speed) {
+        this.img = img
         this.x = x
         this.y = y
         this.speed = speed
-        this.scale = 100
+        this.scale = 0.3
         this.rotation = 3.14
-
-        switch (color) {
-            case "green": this.img = "img/car_green.png"
-        }
+        this.width
+        this.height
     }
 }

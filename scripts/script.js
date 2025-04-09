@@ -14,8 +14,8 @@ let currentLevel = 0
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-let car = new Car("green", levels[currentLevel][0], levels[currentLevel][1], 4)
-let parkingSpot = new ParkingSpot(levels[currentLevel][2], levels[currentLevel][3], 70, 120)
+let car = new Car("img/car_red.png", levels[currentLevel][0], levels[currentLevel][1], 4)
+let parkingSpot = new ParkingSpot(levels[currentLevel][2], levels[currentLevel][3], 80, 160)
 
 let keys = {
     up: false,
@@ -71,14 +71,27 @@ function drawCar() {
 
     ctx.save();
 
-    ctx.translate(car.x + car.scale / 2, car.y + car.scale / 2);
+    img.src = car.img;
+    car.width = img.width
+    car.height = img.height
+
+    // Adjust the position based on the scale factor
+    const scaledX = car.x + car.width / 2 * car.scale;
+    const scaledY = car.y + car.height / 2 * car.scale;
+
+    // Translate to the car's position and rotate it
+    ctx.translate(scaledX, scaledY);
     ctx.rotate(car.rotation);
 
-    img.src = car.img;
-    ctx.drawImage(img, -car.scale / 2, -car.scale / 2, car.scale, car.scale);
+    // Apply the scaling factor
+    ctx.scale(car.scale, car.scale);
+
+    // Set the image source (ensure img.src is only set once if it changes)
+
+    // Draw the image, adjusted for the scale
+    ctx.drawImage(img, -car.width / 2, -car.height / 2, car.width, car.height);
 
     ctx.restore();
-
 }
 
 
@@ -113,20 +126,35 @@ function draw() {
 
 function Collision() {
     for (let obstacle of levels[currentLevel]) {
-        if (!obstacle.collision) continue;
+        if (!obstacle.collision) continue; // Skip obstacles that don't have collision
 
         return false
     }
 
-    return false;
+    return false; // No collision
 }
 
 
 function drawLevel(level) {
     for (let index = 4; index < level.length; index++) {
+        ctx.save();
+
         const obstacle = level[index];
         img.src = obstacle.texture;
-        ctx.drawImage(img, obstacle.x, obstacle.y, obstacle.scale, obstacle.scale);
+        obstacle.width = img.width
+        obstacle.height = img.height
+
+        const scaledX = obstacle.x + obstacle.width / 2 * obstacle.scale;
+        const scaledY = obstacle.y + obstacle.height / 2 * obstacle.scale;
+
+
+        ctx.translate(scaledX, scaledY);
+
+        ctx.scale(obstacle.scale, obstacle.scale);
+
+        ctx.drawImage(img, -obstacle.width / 2, -obstacle.height / 2, obstacle.width, obstacle.height);
+
+        ctx.restore();
     }
 }
 

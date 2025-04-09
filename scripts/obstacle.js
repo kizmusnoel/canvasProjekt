@@ -3,7 +3,9 @@ export class Obstacle {
         this.x = x
         this.y = y
         this.texture = texture
-        this.scale = scale*100
+        this.scale = scale
         this.collision = collision
+        this.width
+        this.height
     }
 }
