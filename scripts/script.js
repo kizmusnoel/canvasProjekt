@@ -3,7 +3,7 @@ import { ParkingSpot } from "./parkingSpot.js";
 import { levels } from "./levels.js"
 
 let lastTime = 0;
-const fps = 60;
+const fps = 70;
 
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
@@ -105,6 +105,41 @@ function drawParkingSpot() {
     ctx.fill()
 }
 
+function getCarCorners() {
+    const corners = [];
+
+    // Half dimensions, considering scaling
+    const halfWidth = (car.width * car.scale) / 2;
+    const halfHeight = (car.height * car.scale) / 2;
+
+    // Calculate sin and cos for rotation
+    const sinRotation = Math.sin(car.rotation);
+    const cosRotation = Math.cos(car.rotation);
+
+    // Define the local corners relative to the center of the car
+    const localCorners = [
+        { x: -halfWidth, y: -halfHeight }, // Top-left corner
+        { x: halfWidth, y: -halfHeight },  // Top-right corner
+        { x: -halfWidth, y: halfHeight },  // Bottom-left corner
+        { x: halfWidth, y: halfHeight }    // Bottom-right corner
+    ];
+
+    // Loop through each corner, applying rotation, scaling, and translation
+    for (const corner of localCorners) {
+        // Apply rotation
+        const rotatedX = corner.x * cosRotation - corner.y * sinRotation;
+        const rotatedY = corner.x * sinRotation + corner.y * cosRotation;
+
+        // Apply scaling and translation
+        const finalX = car.x + rotatedX;
+        const finalY = car.y + rotatedY;
+
+        // Store the final position of each corner
+        corners.push({ x: finalX + halfWidth, y: finalY + halfHeight });
+    }
+
+    return corners;
+}
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -123,21 +158,28 @@ function draw() {
         car.y = levels[currentLevel][1]
         car.rotation = 3.14
     }
+
 }
 
 function Collision() {
     for (let obstacle of levels[currentLevel]) {
         if (!obstacle.collision) continue;
-        if (
-            Math.abs(car.x - obstacle.x) < Math.abs(car.width - obstacle.width) &&
-            Math.abs(car.y - obstacle.y) < Math.abs(car.height - obstacle.height) / 2
-        ) return true;
+        const corners = getCarCorners();
 
+        for (const corner of corners) {
+            if (
+                corner.x > obstacle.x &&
+                corner.x < obstacle.x + obstacle.width * obstacle.scale &&
+                corner.y > obstacle.y &&
+                corner.y < obstacle.y + obstacle.height * obstacle.scale
+            ) {
+                return true;
+            }
+        }
     }
-
-    // No collision detected
     return false;
 }
+
 // Draw the car
 function drawCar() {
 
