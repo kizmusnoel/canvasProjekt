@@ -38,8 +38,15 @@ document.querySelectorAll(".level").forEach((level) => {
     level.addEventListener("click", () => {
         if (!level.classList.contains("disabled")) {
             currentLevel = level.id - 1
-            document.querySelector("#levelScreen").style.display = "none"
-            canvas.style.display = "block"
+            // animate level screen sliding up
+
+            document.querySelector("#levelScreen").style.transform = "translateY(-100%)"
+            document.querySelector("#levelScreen").style.transition = "transform 0.5s ease-in-out"
+            setTimeout(() => {
+                document.querySelector("#levelScreen").style.display = "none"
+                canvas.style.display = "block"
+            }
+                , 500)
 
         }
 
@@ -234,10 +241,6 @@ function drawLevel(level) {
 }
 
 window.addEventListener("keydown", (event) => {
-    if (event.key === "ArrowUp") keys.up = true;
-    if (event.key === "ArrowDown") keys.down = true;
-    if (event.key === "ArrowLeft") keys.left = true;
-    if (event.key === "ArrowRight") keys.right = true;
     if (event.key === "w") keys.up = true;
     if (event.key === "s") keys.down = true;
     if (event.key === "a") keys.left = true;
@@ -245,10 +248,6 @@ window.addEventListener("keydown", (event) => {
 });
 
 window.addEventListener("keyup", (event) => {
-    if (event.key === "ArrowUp") keys.up = false;
-    if (event.key === "ArrowDown") keys.down = false;
-    if (event.key === "ArrowLeft") keys.left = false;
-    if (event.key === "ArrowRight") keys.right = false;
     if (event.key === "w") keys.up = false;
     if (event.key === "s") keys.down = false;
     if (event.key === "a") keys.left = false;
