@@ -38,22 +38,11 @@ document.querySelectorAll(".level").forEach((level) => {
     level.addEventListener("click", () => {
         if (!level.classList.contains("disabled")) {
             currentLevel = level.id - 1
-            // animate level screen sliding up
-
-            document.querySelector("#levelScreen").style.transform = "translateY(-100%)"
-            document.querySelector("#levelScreen").style.transition = "transform 0.5s ease-in-out"
-            setTimeout(() => {
-                document.querySelector("#levelScreen").style.display = "none"
-                canvas.style.display = "block"
-            }
-                , 500)
-
+            canvas.style.display = "block"
+            document.querySelector("#levelScreen").style.display = "none"
         }
-
     })
 })
-
-
 
 
 
@@ -147,6 +136,21 @@ function getCarCorners() {
 
     return corners;
 }
+
+function drawUI() {
+    ctx.save()
+    ctx.beginPath()
+    ctx.fillStyle = "#7b61b6";
+    ctx.roundRect(canvas.width - 240, -20, 300, 100, 20)
+    ctx.fill()
+
+    ctx.fillStyle = "gold";
+    ctx.font = "60px Arial";
+    ctx.fillText("Level " + (currentLevel + 1), canvas.width - 210, 60);
+    ctx.restore()
+}
+
+
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -154,6 +158,7 @@ function draw() {
     drawLevel(levels[currentLevel])
     drawParkingSpot();
     drawCar();
+    drawUI()
 
     if (checkCollisionWithParking()) {
         ctx.fillStyle = "black";
