@@ -92,12 +92,11 @@ function checkCollisionWithParking() {
 
 
 function drawParkingSpot() {
-    if (checkCollisionWithParking()) ctx.fillStyle = "lightgreen";
-    else ctx.fillStyle = "green";
+    if (checkCollisionWithParking()) ctx.fillStyle = 'rgba(0, 255, 0, 0.8)';
+    else ctx.fillStyle = 'rgba(0, 255, 0, 0.45)';
     ctx.lineWidth = "5"
     ctx.beginPath()
     ctx.rect(parkingSpot.x, parkingSpot.y, parkingSpot.width, parkingSpot.height);
-    ctx.stroke()
     ctx.fill()
 }
 
