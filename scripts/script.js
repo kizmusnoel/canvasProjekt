@@ -29,6 +29,9 @@ let keys = {
     right: false
 };
 
+let totalTime = 0
+let startTime = Date.now()
+
 // menu
 document.querySelector("#startButton").addEventListener("click", () => {
     document.querySelector("#startScreen").style.display = "none"
@@ -40,11 +43,16 @@ document.querySelectorAll(".level").forEach((level) => {
             currentLevel = level.id - 1
             canvas.style.display = "block"
             document.querySelector("#levelScreen").style.display = "none"
+            totalTime = 0
+            startTime = Date.now()
         }
     })
 })
 
-
+let timeInterval = setInterval(() => {
+    totalTime = Math.floor((Date.now() - startTime) / 1000)
+    console.log(totalTime)
+}, 1000)
 
 
 
@@ -146,6 +154,20 @@ function drawUI() {
     ctx.fillStyle = "gold";
     ctx.font = "60px Arial";
     ctx.fillText("Level " + (currentLevel + 1), canvas.width - 210, 60);
+
+
+    if (checkCollisionWithParking()) {
+        ctx.beginPath()
+        ctx.fillStyle = "#7b61b6";
+
+        ctx.roundRect(canvas.width / 2 - 270, canvas.height - 60, 500, 100, 20)
+        ctx.fill()
+        ctx.fillStyle = "gold";
+        ctx.font = "30px Arial";
+        ctx.fillText("Parked! Press [Space] to Continue", canvas.width / 2 - 250, canvas.height - 20);
+    }
+
+
     ctx.restore()
 }
 
@@ -159,11 +181,6 @@ function draw() {
     drawCar();
     drawUI()
 
-    if (checkCollisionWithParking()) {
-        ctx.fillStyle = "black";
-        ctx.font = "30px Arial";
-        ctx.fillText("Parked! Press [Space] to Continue", canvas.width / 2 - 150, canvas.height / 2 - 150);
-    }
     if (Collision()) {
         car.x = levels[currentLevel][0]
         car.y = levels[currentLevel][1]
@@ -263,6 +280,8 @@ function NextLevel() {
     currentLevel++
 
     if (currentLevel >= levels.length) {
+        document.querySelector("#totalTime").innerHTML = totalTime
+
         localStorage.setItem("unlockedLevels", null)
         canvas.style.display = "none"
         document.querySelector("#endScreen").style.display = "flex"
