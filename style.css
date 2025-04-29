@@ -9,7 +9,7 @@ body {
 
 canvas {
     display: none;
-    background-color: white;
+    background-image: url(img/hatterkep.png);
     margin: auto;
     width: 1300px;
     height: 594px;
