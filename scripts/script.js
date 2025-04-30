@@ -19,7 +19,7 @@ unlockedLevels.forEach((level) => {
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-let car = new Car("img/car_red.png", levels[currentLevel][0], levels[currentLevel][1], 4)
+let car = new Car("img/car_red.png", levels[currentLevel][0], levels[currentLevel][1], 2.7)
 let parkingSpot = new ParkingSpot(levels[currentLevel][2], levels[currentLevel][3], 160, 80)
 
 let keys = {
