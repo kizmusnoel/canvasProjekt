@@ -19,7 +19,7 @@ unlockedLevels.forEach((level) => {
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-let car = new Car("img/car_red.png", levels[currentLevel][0], levels[currentLevel][1], 4)
+let car = new Car("img/car_red.png", levels[currentLevel][0], levels[currentLevel][1], 2.7)
 let parkingSpot = new ParkingSpot(levels[currentLevel][2], levels[currentLevel][3], 160, 80)
 
 let keys = {
@@ -51,7 +51,6 @@ document.querySelectorAll(".level").forEach((level) => {
 
 let timeInterval = setInterval(() => {
     totalTime = Math.floor((Date.now() - startTime) / 1000)
-    console.log(totalTime)
 }, 1000)
 
 
@@ -92,8 +91,8 @@ function moveCar() {
 // Detect collision with parking spot
 function checkCollisionWithParking() {
     if (
-        Math.abs(car.x - parkingSpot.x) < 40 &&
-        Math.abs(car.y - parkingSpot.y) < 40
+        Math.abs((car.x + car.width / 8) - (parkingSpot.x + parkingSpot.width / 2)) < 40 &&
+        Math.abs((car.y + car.height / 8) - (parkingSpot.y + parkingSpot.height / 2)) < 40
     ) return true;
     return false;
 }
