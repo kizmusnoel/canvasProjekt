@@ -174,11 +174,16 @@ function drawUI() {
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-
-    drawLevel(levels[currentLevel])
     drawParkingSpot();
+    ctx.save()
+    ctx.shadowColor = "black";
+    ctx.shadowBlur = 10;
+    ctx.shadowOffsetX = 5;
+    ctx.shadowOffsetY = 5;
     drawCar();
+    drawLevel(levels[currentLevel])
     drawUI()
+    ctx.restore()
 
     if (Collision()) {
         car.x = levels[currentLevel][0]
